@@ -1,4 +1,4 @@
-package com.example.demo.dominio.modelo;
+package com.uco.myproject.dominio.modelo;
 
 public class Persona {
 

@@ -1,4 +1,4 @@
-package com.example.demo.infraestructura.controlador;
+package com.uco.myproject.infraestructura.controlador;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
