@@ -32,8 +32,8 @@ public class PersonaTest {
 
         //act - assert (ejecuta el metodo a probar)
 
-        Assertions.assertEquals(Assertions.assertThrows(IllegalArgumentException.class, () -> {
-            Persona.of(nombre, apellido);
-        }).getMessage(), "El nombre no puede ser vacio");
+        Assertions.assertEquals(Assertions.assertThrows(IllegalArgumentException.class, () ->
+            Persona.of(nombre, apellido)
+        ).getMessage(), "El nombre no puede ser vacio");
     }
 }

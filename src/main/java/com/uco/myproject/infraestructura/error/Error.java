@@ -2,8 +2,8 @@ package com.uco.myproject.infraestructura.error;
 
 public class Error {
 
-    private String nombreExcepcion;
-    private String mensaje;
+    private final String nombreExcepcion;
+    private final String mensaje;
 
     public Error(String nombreExcepcion, String mensaje) {
         this.nombreExcepcion = nombreExcepcion;

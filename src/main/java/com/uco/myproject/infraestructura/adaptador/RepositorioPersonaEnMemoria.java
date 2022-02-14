@@ -3,8 +3,6 @@ package com.uco.myproject.infraestructura.adaptador;
 import com.uco.myproject.dominio.modelo.Persona;
 import com.uco.myproject.dominio.puerto.RepositorioPersona;
 import org.springframework.stereotype.Repository;
-
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -12,7 +10,7 @@ import java.util.List;
 public class RepositorioPersonaEnMemoria implements RepositorioPersona {
 
     private long secuencia;
-    private HashMap<Long, Persona> personas = new HashMap<>();
+    private final HashMap<Long, Persona> personas = new HashMap<>();
 
     @Override
     public List<Persona> listar() {

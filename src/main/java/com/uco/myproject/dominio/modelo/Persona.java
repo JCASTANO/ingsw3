@@ -2,8 +2,8 @@ package com.uco.myproject.dominio.modelo;
 
 public class Persona {
 
-    private String nombre;
-    private String apellido;
+    private final String nombre;
+    private final String apellido;
 
     public static Persona of(String nombre, String apellido) {
 

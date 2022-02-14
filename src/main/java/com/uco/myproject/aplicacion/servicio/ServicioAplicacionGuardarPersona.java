@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class ServicioAplicacionGuardarPersona {
 
-    private ServicioGuardarPersona servicioGuardarPersona;
+    private final ServicioGuardarPersona servicioGuardarPersona;
 
     public ServicioAplicacionGuardarPersona(ServicioGuardarPersona servicioGuardarPersona) {
         this.servicioGuardarPersona = servicioGuardarPersona;

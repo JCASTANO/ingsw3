@@ -19,9 +19,9 @@ public class ServicioGuardarPersonaTest {
 
         Mockito.when(repositorio.existe(Mockito.any())).thenReturn(true);
 
-        Assertions.assertEquals(Assertions.assertThrows(IllegalStateException.class, () -> {
-            servicio.ejecutar(persona);
-        }).getMessage(), "Ya existe la persona con los datos ingresados.");
+        Assertions.assertEquals(Assertions.assertThrows(IllegalStateException.class, () ->
+            servicio.ejecutar(persona)
+        ).getMessage(), "Ya existe la persona con los datos ingresados");
 
     }
 }
