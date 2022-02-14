@@ -21,7 +21,7 @@ public class ServicioGuardarPersonaTest {
 
         Assertions.assertEquals(Assertions.assertThrows(IllegalStateException.class, () -> {
             servicio.ejecutar(persona);
-        }).getMessage(), "Ya existe la persona con los datos ingresados");
+        }).getMessage(), "Ya existe la persona con los datos ingresados.");
 
     }
 }
