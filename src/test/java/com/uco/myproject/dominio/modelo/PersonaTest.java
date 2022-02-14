@@ -34,6 +34,6 @@ public class PersonaTest {
 
         Assertions.assertEquals(Assertions.assertThrows(IllegalArgumentException.class, () -> {
             Persona.of(nombre, apellido);
-        }).getMessage(), "El nombre no puede ser vacio.");
+        }).getMessage(), "El nombre no puede ser vacio");
     }
 }
