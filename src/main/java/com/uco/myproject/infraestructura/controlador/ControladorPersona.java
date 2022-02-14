@@ -1,19 +1,33 @@
 package com.uco.myproject.infraestructura.controlador;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RestController;
+import com.uco.myproject.aplicacion.servicio.ServicioAplicacionGuardarPersona;
+import com.uco.myproject.aplicacion.servicio.ServicioAplicacionListarPersonas;
+import com.uco.myproject.aplicacion.dto.DtoPersona;
+import com.uco.myproject.aplicacion.dto.DtoRespuesta;
+import com.uco.myproject.dominio.modelo.Persona;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
+@RequestMapping("/api/personas")
 public class ControladorPersona {
 
-    @GetMapping("/personas")
-    public String listar() {
-        return "hola";
+    private final ServicioAplicacionListarPersonas servicioListarPersonas;
+    private final ServicioAplicacionGuardarPersona servicioGuardarPersona;
+
+    public ControladorPersona(ServicioAplicacionListarPersonas servicioListarPersonas, ServicioAplicacionGuardarPersona servicioGuardarPersona) {
+        this.servicioListarPersonas = servicioListarPersonas;
+        this.servicioGuardarPersona = servicioGuardarPersona;
     }
 
-    @PostMapping("/personas")
-    public void crear() {
+    @GetMapping
+    public List<Persona> listar() {
+        return servicioListarPersonas.ejecutar();
+    }
 
+    @PostMapping
+    public DtoRespuesta<Long> crear(@RequestBody DtoPersona dto) {
+        return this.servicioGuardarPersona.ejecutar(dto);
     }
 }

@@ -14,7 +14,7 @@ public class PersonaTest {
         String apellido = "castaño";
 
         //act (ejecuta el metodo a probar)
-        Persona persona = new Persona(nombre, apellido);
+        Persona persona = Persona.of(nombre, apellido);
 
         //assert se valida el resultado
 
@@ -30,13 +30,10 @@ public class PersonaTest {
         String nombre = null;
         String apellido = "castaño";
 
-        //act (ejecuta el metodo a probar)
-        try {
-            new Persona(nombre, apellido);
-            Assertions.fail();
-        } catch (IllegalArgumentException e) {
-            //assert
-            Assertions.assertEquals(e.getMessage(), "El nombre no puede ser vacio");
-        }
+        //act - assert (ejecuta el metodo a probar)
+
+        Assertions.assertEquals(Assertions.assertThrows(IllegalArgumentException.class, () -> {
+            Persona.of(nombre, apellido);
+        }).getMessage(), "El nombre no puede ser vacio");
     }
 }

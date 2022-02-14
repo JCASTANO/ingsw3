@@ -5,16 +5,20 @@ public class Persona {
     private String nombre;
     private String apellido;
 
-    public Persona(String nombre, String apellido) {
+    public static Persona of(String nombre, String apellido) {
 
         validarObligatorio(nombre, "El nombre no puede ser vacio");
         validarObligatorio(apellido, "El apellido no puede ser vacio");
 
+        return new Persona(nombre, apellido);
+    }
+
+    private Persona(String nombre, String apellido) {
         this.nombre = nombre;
         this.apellido = apellido;
     }
 
-    private void validarObligatorio(String valor, String mensaje) {
+    private static void validarObligatorio(String valor, String mensaje) {
         if(valor == null || valor.isBlank()) {
             throw new IllegalArgumentException(mensaje);
         }
@@ -26,5 +30,13 @@ public class Persona {
 
     public String getApellido() {
         return apellido;
+    }
+
+    @Override
+    public String toString() {
+        return "Persona{" +
+                "nombre='" + nombre + '\'' +
+                ", apellido='" + apellido + '\'' +
+                '}';
     }
 }
