@@ -3,10 +3,10 @@ package com.uco.myproject.dominio.modelo;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-public class PersonaTest {
+class PersonaTest {
 
     @Test
-    public void validarCreacionExitosa() {
+    void validarCreacionExitosa() {
         //patron 3a
 
         //arrange (prepara todos los datos para la prueba)
@@ -18,8 +18,8 @@ public class PersonaTest {
 
         //assert se valida el resultado
 
-        Assertions.assertEquals(persona.getNombre(), "juan");
-        Assertions.assertEquals(persona.getApellido(), "castaño");
+        Assertions.assertEquals("juan",persona.getNombre());
+        Assertions.assertEquals("castaño",persona.getApellido());
     }
 
     @Test
@@ -32,8 +32,8 @@ public class PersonaTest {
 
         //act - assert (ejecuta el metodo a probar)
 
-        Assertions.assertEquals(Assertions.assertThrows(IllegalArgumentException.class, () ->
+        Assertions.assertEquals("El nombre no puede ser vacio",Assertions.assertThrows(IllegalArgumentException.class, () ->
             Persona.of(nombre, apellido)
-        ).getMessage(), "El nombre no puede ser vacio");
+        ).getMessage());
     }
 }

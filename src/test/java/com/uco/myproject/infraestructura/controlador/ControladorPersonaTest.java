@@ -22,7 +22,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 @ExtendWith(SpringExtension.class)
 @WebMvcTest(ControladorPersona.class)
 @ContextConfiguration(classes = ApplicationMock.class)
-public class ControladorPersonaTest {
+class ControladorPersonaTest {
 
     @Autowired
     private ObjectMapper objectMapper;
