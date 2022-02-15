@@ -23,7 +23,7 @@ class PersonaTest {
     }
 
     @Test
-    public void validarCamposFaltantes() {
+    void validarCamposFaltantes() {
         //patron 3a
 
         //arrange (prepara todos los datos para la prueba)
