@@ -2,6 +2,7 @@ plugins {
 	id 'org.springframework.boot' version '2.6.3'
 	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
 	id 'java'
+	id 'jacoco'
 	id "org.sonarqube" version "3.3"
 }
 
@@ -28,4 +29,14 @@ dependencies {
 
 tasks.named('test') {
 	useJUnitPlatform()
+	finalizedBy jacocoTestReport
+}
+
+jacocoTestReport {
+	reports {
+		xml.enabled true
+		html.enabled true
+	}
+	additionalSourceDirs files("aplicacion/src/main/java")
+	additionalClassDirs files("aplicacion/build/classes/java/main")
 }
