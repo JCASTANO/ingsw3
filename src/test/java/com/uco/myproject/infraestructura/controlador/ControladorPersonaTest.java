@@ -20,6 +20,8 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.hamcrest.core.Is.is;
 
 @ExtendWith(SpringExtension.class)
 @WebMvcTest(ControladorPersona.class)
@@ -40,10 +42,10 @@ class ControladorPersonaTest {
     @DisplayName("Debe crear una persona de forma exitosa y luego fallar al crear la misma")
     void crearDuplicadaTest() throws Exception {
 
-        crear();
-
         // arrange
         var dto = new DtoPersonaTestDataBuilder().build();
+
+        crear(dto);
 
         // act - assert
         mocMvc.perform(MockMvcRequestBuilders.post("/api/personas")
@@ -58,12 +60,13 @@ class ControladorPersonaTest {
     @DisplayName("Debe crear una persona de forma exitosa y validar que si quedó guardada")
     void crearTest() throws Exception {
 
-        crear();
+        var dto = new DtoPersonaTestDataBuilder().build();
+
+        crear(dto);
     }
 
-    private void crear() throws Exception {
+    private void crear(DtoPersona dto) throws Exception {
         // arrange
-        var dto = new DtoPersonaTestDataBuilder().build();
 
         // act
         var result = mocMvc.perform(MockMvcRequestBuilders.post("/api/personas")
@@ -87,10 +90,17 @@ class ControladorPersonaTest {
     }
 
     @Test
-    @DisplayName("Debe listar las personas")
+    @DisplayName("Debe listar las personas luego de crearlas")
     void listarTest() throws Exception {
+
+        var dto = new DtoPersonaTestDataBuilder().build();
+
+        crear(dto);
+
         mocMvc.perform(get("/api/personas")
                         .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk());
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].nombre", is(dto.getNombre())))
+                .andExpect(jsonPath("$[0].apellido", is(dto.getApellido())));
     }
 }
