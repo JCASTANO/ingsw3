@@ -36,4 +36,19 @@ class PersonaTest {
             Persona.of(nombre, apellido)
         ).getMessage());
     }
+
+    @Test
+    void validarCamposVacios() {
+        //patron 3a
+
+        //arrange (prepara todos los datos para la prueba)
+        String nombre = "";
+        String apellido = "castaño";
+
+        //act - assert (ejecuta el metodo a probar)
+
+        Assertions.assertEquals("El nombre no puede ser vacio",Assertions.assertThrows(IllegalArgumentException.class, () ->
+                Persona.of(nombre, apellido)
+        ).getMessage());
+    }
 }
