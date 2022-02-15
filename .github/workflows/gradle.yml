@@ -15,9 +15,19 @@ jobs:
           java-version: 17
           distribution: 'adopt'
           cache: gradle
+      - name: Cache SonarCloud packages
+        uses: actions/cache@v1
+        with:
+          path: ~/.sonar/cache
+          key: ${{ runner.os }}-sonar
+          restore-keys: ${{ runner.os }}-sonar
       - name: Compile
         run: ./gradlew compileJava
       - name: Test
         run: ./gradlew test
       - name: Jar
         run: ./gradlew bootJar
+      - name: analyze
+        env:
+          SONAR_TOKEN: 175a90738afa3502a636001bf635fa9333e24688
+        run: ./gradlew sonarqube --info
