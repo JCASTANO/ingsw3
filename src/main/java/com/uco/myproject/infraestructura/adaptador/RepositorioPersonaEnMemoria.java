@@ -30,7 +30,6 @@ public class RepositorioPersonaEnMemoria implements RepositorioPersona {
 
     @Override
     public boolean existe(Persona persona) {
-        return listar().stream().anyMatch(row -> row.getNombre().equals(persona.getNombre()) &&
-                                                 row.getApellido().equals(persona.getApellido()));
+        return listar().stream().anyMatch(row -> row.toString().equals(persona.toString()));
     }
 }

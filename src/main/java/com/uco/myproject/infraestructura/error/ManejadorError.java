@@ -22,7 +22,7 @@ public class ManejadorError extends ResponseEntityExceptionHandler {
     public ManejadorError() {
         CODIGOS_ESTADO.put(IllegalStateException.class.getSimpleName(), HttpStatus.CONFLICT.value());
 
-        //en caso de tener otra excepcion matricularla aca
+        //en caso de tener otra excepcion propia matricularla aca
     }
 
     @ExceptionHandler(Exception.class)
@@ -33,7 +33,7 @@ public class ManejadorError extends ResponseEntityExceptionHandler {
         String mensaje = exception.getMessage();
         Integer codigo = CODIGOS_ESTADO.get(excepcionNombre);
 
-        if (codigo != null && codigo != HttpStatus.INTERNAL_SERVER_ERROR.value()) {
+        if (codigo != null) {
             Error error = new Error(excepcionNombre, mensaje);
             resultado = new ResponseEntity<>(error, HttpStatus.valueOf(codigo));
         } else {
