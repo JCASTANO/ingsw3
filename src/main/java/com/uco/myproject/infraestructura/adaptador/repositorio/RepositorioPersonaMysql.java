@@ -26,9 +26,10 @@ public class RepositorioPersonaMysql implements RepositorioPersona {
     @Override
     public Persona consultarPorId(Long id) {
 
-        EntidadPersona entidadPersona = this.repositorioPersonaJpa.findById(id).get();
-
-        return Persona.of(entidadPersona.getNombre(), entidadPersona.getApellido());
+       return this.repositorioPersonaJpa
+               .findById(id)
+               .map(entidad -> Persona.of(entidad.getNombre(), entidad.getApellido()))
+               .orElse(null);
     }
 
     @Override
