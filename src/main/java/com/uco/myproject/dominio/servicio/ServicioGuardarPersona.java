@@ -18,7 +18,7 @@ public class ServicioGuardarPersona {
     public Long ejecutar(Persona persona) {
 
         if(this.repositorioPersona.existe(persona)) {
-            throw new IllegalStateException(MENSAJE_YA_EXISTE);
+            //throw new IllegalStateException(MENSAJE_YA_EXISTE);
         }
 
         return this.repositorioPersona.guardar(persona);
