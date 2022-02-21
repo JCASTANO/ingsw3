@@ -6,7 +6,6 @@ import com.uco.myproject.infraestructura.adaptador.entidad.EntidadPersona;
 import com.uco.myproject.infraestructura.adaptador.repositorio.jpa.RepositorioPersonaJpa;
 import org.springframework.stereotype.Repository;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Repository
 public class RepositorioPersonaMysql implements RepositorioPersona {
@@ -20,7 +19,7 @@ public class RepositorioPersonaMysql implements RepositorioPersona {
     @Override
     public List<Persona> listar() {
         List<EntidadPersona> entidades = this.repositorioPersonaJpa.findAll();
-        return entidades.stream().map(entidad -> Persona.of(entidad.getNombre(), entidad.getApellido())).collect(Collectors.toList());
+        return entidades.stream().map(entidad -> Persona.of(entidad.getNombre(), entidad.getApellido())).toList();
     }
 
     @Override
