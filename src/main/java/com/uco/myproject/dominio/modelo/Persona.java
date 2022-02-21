@@ -31,12 +31,4 @@ public class Persona {
     public String getApellido() {
         return apellido;
     }
-
-    @Override
-    public String toString() {
-        return "Persona{" +
-                "nombre='" + nombre + '\'' +
-                ", apellido='" + apellido + '\'' +
-                '}';
-    }
 }
