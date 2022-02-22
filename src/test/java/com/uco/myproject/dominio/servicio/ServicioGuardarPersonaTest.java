@@ -9,7 +9,7 @@ import org.mockito.Mockito;
 
 class ServicioGuardarPersonaTest {
 
-    //@Test
+    @Test
     void siNombreYaExisteDeberiaRetornarError() {
 
         //arrange
@@ -28,7 +28,7 @@ class ServicioGuardarPersonaTest {
 
     }
 
-    //@Test
+    @Test
     void guardarExitoso() {
 
         // arrange

@@ -60,7 +60,7 @@ class ControladorPersonaTest {
     }
 
 
-    //@Test
+    @Test
     @DisplayName("Debe crear una persona de forma exitosa y validar que si quedó guardada")
     void crearTest() throws Exception {
 
