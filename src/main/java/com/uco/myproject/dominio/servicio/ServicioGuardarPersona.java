@@ -20,7 +20,6 @@ public class ServicioGuardarPersona {
         if(this.repositorioPersona.existe(persona)) {
             throw new IllegalStateException(MENSAJE_YA_EXISTE);
         }
-
         return this.repositorioPersona.guardar(persona);
     }
 }
