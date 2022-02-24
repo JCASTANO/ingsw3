@@ -1,22 +1,14 @@
 package com.uco.myproject.aplicacion.dto;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+
+@NoArgsConstructor
+@AllArgsConstructor
+@Getter
 public class DtoPersona {
 
     private String nombre;
     private String apellido;
-
-    public DtoPersona() {}
-
-    public DtoPersona(String nombre, String apellido) {
-        this.nombre = nombre;
-        this.apellido = apellido;
-    }
-
-    public String getNombre() {
-        return nombre;
-    }
-
-    public String getApellido() {
-        return apellido;
-    }
 }
