@@ -19,7 +19,6 @@ public class ControladorPersona {
     public ControladorPersona(ServicioAplicacionListarPersonas servicioListarPersonas, ServicioAplicacionGuardarPersona servicioGuardarPersona) {
         this.servicioListarPersonas = servicioListarPersonas;
         this.servicioGuardarPersona = servicioGuardarPersona;
-        //todo 
     }
 
     @GetMapping

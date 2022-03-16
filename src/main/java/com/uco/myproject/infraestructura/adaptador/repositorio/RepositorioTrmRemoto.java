@@ -2,6 +2,8 @@ package com.uco.myproject.infraestructura.adaptador.repositorio;
 
 import com.uco.myproject.dominio.dto.DtoTrm;
 import com.uco.myproject.dominio.puerto.RepositorioTrm;
+import com.uco.myproject.infraestructura.adaptador.exception.TechnicalException;
+import com.uco.myproject.infraestructura.adaptador.exception.ToManyRequestException;
 import org.springframework.core.env.Environment;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -12,10 +14,15 @@ import org.springframework.retry.annotation.Retryable;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.client.HttpStatusCodeException;
 import org.springframework.web.client.RestTemplate;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 @Repository
 public class RepositorioTrmRemoto implements RepositorioTrm {
+
+    private final static Logger logger = LoggerFactory.getLogger(RepositorioTrmRemoto.class);
+
 
     private final RestTemplate restTemplate;
     private final Environment environment;
@@ -36,7 +43,7 @@ public class RepositorioTrmRemoto implements RepositorioTrm {
             HttpEntity<String> entity = new HttpEntity<>(headers);
 
             ResponseEntity<DtoTrm> response = this.restTemplate.exchange(
-                    "https://sw3-trm.herokuapp.com/trm",
+                    this.environment.getRequiredProperty("url.trm"),
                     HttpMethod.GET,
                     entity,
                     DtoTrm.class);
@@ -44,7 +51,14 @@ public class RepositorioTrmRemoto implements RepositorioTrm {
             return response.getBody();
 
         } catch(HttpStatusCodeException e) {
-            throw new RuntimeException(e);
+
+            logger.error("Error consumiendo el servicio de trm", e);
+
+            if(e.getStatusCode().is4xxClientError()) {
+                throw new ToManyRequestException(e);
+            } else {
+                throw new TechnicalException(e);
+            }
         }
     }
 }
