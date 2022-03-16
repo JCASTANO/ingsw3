@@ -33,7 +33,7 @@ public class RepositorioTrmRemoto implements RepositorioTrm {
     }
 
     @Override
-    @Retryable( value = RuntimeException.class,
+    @Retryable( value = ToManyRequestException.class,
             maxAttempts = 3, backoff = @Backoff(delay = 7000))
     public DtoTrm consultarActual() {
 
