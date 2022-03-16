@@ -2,6 +2,7 @@ package com.uco.myproject.dominio.servicio;
 
 import com.uco.myproject.dominio.modelo.Persona;
 import com.uco.myproject.dominio.puerto.RepositorioPersona;
+import com.uco.myproject.dominio.puerto.RepositorioTrm;
 import com.uco.myproject.dominio.testdatabuilder.PersonaTestDataBuilder;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -16,7 +17,8 @@ class ServicioGuardarPersonaTest {
         var persona = new PersonaTestDataBuilder().build();
 
         var repositorio = Mockito.mock(RepositorioPersona.class);
-        var servicio = new ServicioGuardarPersona(repositorio);
+        var repositorioRemoto = Mockito.mock(RepositorioTrm.class);
+        var servicio = new ServicioGuardarPersona(repositorio, repositorioRemoto);
 
         Mockito.when(repositorio.existe(Mockito.any())).thenReturn(true);
 
@@ -35,7 +37,8 @@ class ServicioGuardarPersonaTest {
         var persona = new PersonaTestDataBuilder().build();
 
         var repositorio = Mockito.mock(RepositorioPersona.class);
-        var servicio = new ServicioGuardarPersona(repositorio);
+        var repositorioRemoto = Mockito.mock(RepositorioTrm.class);
+        var servicio = new ServicioGuardarPersona(repositorio,repositorioRemoto);
 
 
         Mockito.when(repositorio.guardar(Mockito.any(Persona.class))).thenReturn(1l);
