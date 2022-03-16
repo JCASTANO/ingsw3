@@ -21,7 +21,7 @@ import org.slf4j.LoggerFactory;
 @Repository
 public class RepositorioTrmRemoto implements RepositorioTrm {
 
-    private final static Logger logger = LoggerFactory.getLogger(RepositorioTrmRemoto.class);
+    private static final Logger logger = LoggerFactory.getLogger(RepositorioTrmRemoto.class);
 
 
     private final RestTemplate restTemplate;

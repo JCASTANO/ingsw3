@@ -1,6 +1,5 @@
 package com.uco.myproject.dominio.servicio;
 
-import com.uco.myproject.dominio.dto.DtoTrm;
 import com.uco.myproject.dominio.modelo.Persona;
 import com.uco.myproject.dominio.puerto.RepositorioPersona;
 import com.uco.myproject.dominio.puerto.RepositorioTrm;
@@ -25,8 +24,7 @@ public class ServicioGuardarPersona {
             throw new IllegalStateException(MENSAJE_YA_EXISTE);
         }
 
-        DtoTrm trm = this.repositorioTrm.consultarActual();
-        System.out.println(trm);
+        this.repositorioTrm.consultarActual();
 
         return this.repositorioPersona.guardar(persona);
     }
