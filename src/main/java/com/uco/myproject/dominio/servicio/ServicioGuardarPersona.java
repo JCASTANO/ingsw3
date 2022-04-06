@@ -24,7 +24,7 @@ public class ServicioGuardarPersona {
             throw new IllegalStateException(MENSAJE_YA_EXISTE);
         }
 
-        this.repositorioTrm.consultarActual();
+        //this.repositorioTrm.consultarActual();
 
         return this.repositorioPersona.guardar(persona);
     }
