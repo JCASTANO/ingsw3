@@ -41,7 +41,8 @@ dependencies {
 	compileOnly 'org.projectlombok:lombok:1.18.20'
 	annotationProcessor 'org.projectlombok:lombok:1.18.20'
 
-	implementation 'io.jsonwebtoken:jjwt:0.9.1'
+	implementation 'io.jsonwebtoken:jjwt:0.7.0'
+	implementation 'com.auth0:java-jwt:3.19.1'
 }
 
 tasks.named('test') {
