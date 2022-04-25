@@ -6,6 +6,7 @@ import com.uco.myproject.aplicacion.dto.DtoRespuesta;
 import com.uco.myproject.dominio.modelo.Persona;
 import com.uco.myproject.dominio.servicio.ServicioGenerarToken;
 import com.uco.myproject.dominio.servicio.ServicioGuardarPersona;
+import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.stereotype.Component;
 
 import java.util.Arrays;
@@ -28,6 +29,10 @@ public class ServicioAplicacionLogin {
         //pista: crear entidad de usuario y otra para roles
 
         List<String> roles = Arrays.asList("admin", "empleado");
+
+        String clave = DigestUtils.sha256Hex(dto.getClave());
+
+        System.out.println(clave);
 
         return new DtoRespuesta<>(this.servicioGenerarToken.ejecutar(dto.getUsuario(), roles));
     }
