@@ -1,7 +1,6 @@
 package com.uco.myproject.infraestructura.adaptador.servicio;
 
 import com.auth0.jwt.JWT;
-import com.auth0.jwt.interfaces.DecodedJWT;
 import com.uco.myproject.infraestructura.servicio.ServicioValidacionToken;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.impl.TextCodec;
