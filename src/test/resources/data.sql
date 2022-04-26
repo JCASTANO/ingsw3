@@ -1,0 +1,2 @@
+insert into usuario (id, clave, usuario) values (-1, '8d969eef6ecad3c29a3a629280e686cf0c3f5d5a86aff3ca12020c923adc6c92', 'juan.castano');
+insert into rol_usuario (id, rol, id_usuario) values (-1, 'EMPLEADO', -1);
