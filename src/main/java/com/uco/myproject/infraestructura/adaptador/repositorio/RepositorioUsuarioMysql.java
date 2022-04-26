@@ -23,7 +23,7 @@ public class RepositorioUsuarioMysql implements RepositorioUsuario {
     @Override
     public Long guardar(Usuario usuario) {
 
-        List<EntidadRolUsuario> roles = usuario.getRoles().stream().map(rol -> new EntidadRolUsuario(rol.getRol())).collect(Collectors.toList());
+        List<EntidadRolUsuario> roles = usuario.getRoles().stream().map(rol -> new EntidadRolUsuario(rol.getRol())).toList();
         EntidadUsuario entidadUsuario = new EntidadUsuario(usuario.getUsuario(), usuario.getClave(), roles);
 
         return this.repositorioUsuarioJpa.save(entidadUsuario).getId();
@@ -42,7 +42,7 @@ public class RepositorioUsuarioMysql implements RepositorioUsuario {
             return null;
         }
 
-        List<RolUsuario> roles = entidadUsuario.getRoles().stream().map(rol -> RolUsuario.of(rol.getRol())).collect(Collectors.toList());
+        List<RolUsuario> roles = entidadUsuario.getRoles().stream().map(rol -> RolUsuario.of(rol.getRol())).toList();
         return Usuario.of(entidadUsuario.getUsuario(), entidadUsuario.getClave(), roles);
     }
 }

@@ -4,6 +4,7 @@ import com.uco.myproject.aplicacion.dto.DtoLogin;
 import com.uco.myproject.aplicacion.dto.DtoPersona;
 import com.uco.myproject.aplicacion.dto.DtoRespuesta;
 import com.uco.myproject.dominio.modelo.Persona;
+import com.uco.myproject.dominio.modelo.RolUsuario;
 import com.uco.myproject.dominio.modelo.Usuario;
 import com.uco.myproject.dominio.puerto.RepositorioUsuario;
 import com.uco.myproject.dominio.servicio.ServicioCifrarTexto;
@@ -39,7 +40,7 @@ public class ServicioAplicacionLogin {
             throw new IllegalStateException("Usuario o clave incorrecta");
         }
 
-        List<String> roles = usuario.getRoles().stream().map(rol -> rol.getRol()).collect(Collectors.toList());
+        List<String> roles = usuario.getRoles().stream().map(RolUsuario::getRol).toList();
 
         return new DtoRespuesta<>(this.servicioGenerarToken.ejecutar(dto.getUsuario(), roles));
     }
