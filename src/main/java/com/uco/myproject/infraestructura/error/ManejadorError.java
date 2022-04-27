@@ -2,6 +2,7 @@ package com.uco.myproject.infraestructura.error;
 
 import java.util.concurrent.ConcurrentHashMap;
 
+import com.uco.myproject.infraestructura.aspecto.exception.ExceptionUserUnauthorized;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -21,7 +22,7 @@ public class ManejadorError extends ResponseEntityExceptionHandler {
 
     public ManejadorError() {
         CODIGOS_ESTADO.put(IllegalStateException.class.getSimpleName(), HttpStatus.CONFLICT.value());
-
+        CODIGOS_ESTADO.put(ExceptionUserUnauthorized.class.getSimpleName(), HttpStatus.FORBIDDEN.value());
         //en caso de tener otra excepcion propia matricularla aca
     }
 
