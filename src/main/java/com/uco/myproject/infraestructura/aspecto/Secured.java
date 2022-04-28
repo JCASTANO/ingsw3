@@ -7,7 +7,7 @@ import java.lang.annotation.Target;
 
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface SecuredResource {
+public @interface Secured {
 
-    String name();
+    String[] roles();
 }

@@ -5,7 +5,7 @@ import com.uco.myproject.aplicacion.servicio.ServicioAplicacionListarPersonas;
 import com.uco.myproject.aplicacion.dto.DtoPersona;
 import com.uco.myproject.aplicacion.dto.DtoRespuesta;
 import com.uco.myproject.dominio.modelo.Persona;
-import com.uco.myproject.infraestructura.aspecto.SecuredResource;
+import com.uco.myproject.infraestructura.aspecto.Secured;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -24,13 +24,13 @@ public class ControladorPersona {
     }
 
     @GetMapping
-    @SecuredResource(name = "EMPLEADO")
+    @Secured(roles = {"EMPLEADO"})
     public List<Persona> listar() {
         return servicioListarPersonas.ejecutar();
     }
 
     @PostMapping
-    @SecuredResource(name = "EMPLEADO")
+    @Secured(roles = {"EMPLEADO"})
     public DtoRespuesta<Long> crear(@RequestBody DtoPersona dto) {
         return this.servicioGuardarPersona.ejecutar(dto);
     }

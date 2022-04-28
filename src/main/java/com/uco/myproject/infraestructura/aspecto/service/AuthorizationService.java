@@ -1,7 +1,6 @@
 package com.uco.myproject.infraestructura.aspecto.service;
 
 import com.auth0.jwt.JWT;
-import com.auth0.jwt.interfaces.DecodedJWT;
 import org.springframework.core.env.Environment;
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Component;
@@ -20,11 +19,20 @@ public class AuthorizationService {
         this.environment = environment;
     }
 
-    public boolean isAuthorized(String roleToAuthorized) {
+    public boolean isAuthorized(List<String> rolesToAuthorized) {
         String token = obtenerTokenActual();
-        DecodedJWT decoded = JWT.decode(obtenerTokenActual());
-        List<String> roles = decoded.getClaim("roles").asList(String.class);
-        return roles.indexOf(roleToAuthorized) != -1;
+        List<String> currentRoles = JWT.decode(obtenerTokenActual()).getClaim("roles").asList(String.class);
+        return hasRole(rolesToAuthorized, currentRoles);
+    }
+
+    private boolean hasRole(List<String> rolesToAuthorized, List<String> currentRoles) {
+        boolean result = false;
+        for (String role: rolesToAuthorized) {
+            if(currentRoles.indexOf(role) != -1) {
+                result = true;
+            }
+        }
+        return result;
     }
 
     private String obtenerTokenActual() {
