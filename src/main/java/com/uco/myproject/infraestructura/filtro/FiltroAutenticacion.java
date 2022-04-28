@@ -13,6 +13,9 @@ import java.io.IOException;
 
 public class FiltroAutenticacion extends OncePerRequestFilter {
 
+    private static final String STRING_EMPTY = "";
+    private static final String WILDCARD_ALL = "*";
+    private static final String REGEX_ALL = "\\*";
     private static final String MESSAGE_TOKEN_INVALID = "Token does not exist, invalid or expired.";
 
     private final ServicioValidacionToken servicioValidacionToken;
@@ -46,8 +49,19 @@ public class FiltroAutenticacion extends OncePerRequestFilter {
 
             String excludePath = excludePaths[i];
 
-            if(path.equals(excludePath)) {
-                shouldNotFilter = true;
+            if(excludePath.endsWith(WILDCARD_ALL)) {
+                if(path.startsWith(excludePath.replaceAll(REGEX_ALL, STRING_EMPTY))) {
+                    shouldNotFilter = true;
+                }
+            }else if(excludePath.startsWith(WILDCARD_ALL)) {
+                if(path.endsWith(excludePath.replaceAll(REGEX_ALL, STRING_EMPTY))) {
+                    shouldNotFilter = true;
+                }
+            }
+            else {
+                if(path.equals(excludePath)) {
+                    shouldNotFilter = true;
+                }
             }
         }
 
