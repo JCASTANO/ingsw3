@@ -39,7 +39,7 @@ public class SecuredAspect {
         analyzeIfCanContinue(isUserAuthorized);
     }
 
-	private void analyzeIfCanContinue(boolean isUserAuthorized) throws Throwable {
+	private void analyzeIfCanContinue(boolean isUserAuthorized){
 		if (!isUserAuthorized) {
 			throw new ExceptionUserUnauthorized(MESSAGE_USER_UNATHORIZED);
         }

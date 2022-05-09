@@ -37,19 +37,6 @@ public class ServicioGenerarTokenJwt implements ServicioGenerarToken {
                         TextCodec.BASE64.decode(this.environment.getRequiredProperty("token.key"))
                 )
                 .compact();
-
-       /* final SigningKeyResolver signingKeyResolver = new SigningKeyResolverAdapter() {
-            @Override
-            public byte[] resolveSigningKeyBytes(@SuppressWarnings("rawtypes") JwsHeader header, Claims claims) {
-                return TextCodec.BASE64.decode(secretKey);
-            }
-        };
-
-        Jws<Claims> claims = Jwts.parser()
-                .setSigningKeyResolver(signingKeyResolver)
-                .parseClaimsJws(jwt);
-
-        System.out.println(claims.getBody().get("roles"));*/
     }
 
     private static Date createDate(LocalDateTime localDateTime) {

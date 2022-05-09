@@ -9,7 +9,6 @@ import com.uco.myproject.infraestructura.adaptador.repositorio.jpa.RepositorioUs
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Repository
 public class RepositorioUsuarioMysql implements RepositorioUsuario {

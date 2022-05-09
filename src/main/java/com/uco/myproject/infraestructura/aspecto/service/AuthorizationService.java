@@ -1,7 +1,6 @@
 package com.uco.myproject.infraestructura.aspecto.service;
 
 import com.auth0.jwt.JWT;
-import org.springframework.core.env.Environment;
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
@@ -13,14 +12,7 @@ import java.util.List;
 @Component
 public class AuthorizationService {
 
-    private final Environment environment;
-
-    public AuthorizationService(Environment environment) {
-        this.environment = environment;
-    }
-
     public boolean isAuthorized(List<String> rolesToAuthorized) {
-        String token = obtenerTokenActual();
         List<String> currentRoles = JWT.decode(obtenerTokenActual()).getClaim("roles").asList(String.class);
         return hasRole(rolesToAuthorized, currentRoles);
     }
