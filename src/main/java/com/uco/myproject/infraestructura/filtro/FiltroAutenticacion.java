@@ -50,11 +50,11 @@ public class FiltroAutenticacion extends OncePerRequestFilter {
             String excludePath = excludePaths[i];
 
             if(excludePath.endsWith(WILDCARD_ALL)) {
-                if(path.startsWith(excludePath.replace(REGEX_ALL, STRING_EMPTY))) {
+                if(path.startsWith(excludePath.replaceAll(REGEX_ALL, STRING_EMPTY))) {
                     shouldNotFilter = true;
                 }
             }else if(excludePath.startsWith(WILDCARD_ALL)) {
-                if(path.endsWith(excludePath.replace(REGEX_ALL, STRING_EMPTY))) {
+                if(path.endsWith(excludePath.replaceAll(REGEX_ALL, STRING_EMPTY))) {
                     shouldNotFilter = true;
                 }
             }
