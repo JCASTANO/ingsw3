@@ -49,6 +49,10 @@ dependencies {
 
 	implementation "org.springdoc:springdoc-openapi-ui:1.6.8"
 
+	implementation('org.apache.poi:poi:3.17')
+	implementation('net.sf.jxls:jxls-core:1.0.6')
+	implementation('org.jxls:jxls-poi:1.0.14')
+
 }
 
 tasks.named('test') {

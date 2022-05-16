@@ -1,5 +1,6 @@
 package com.uco.myproject.infraestructura.controlador;
 
+import com.uco.myproject.aplicacion.servicio.ServicioAplicacionExportarPersonasExcel;
 import com.uco.myproject.aplicacion.servicio.ServicioAplicacionGuardarPersona;
 import com.uco.myproject.aplicacion.servicio.ServicioAplicacionListarPersonas;
 import com.uco.myproject.aplicacion.dto.DtoPersona;
@@ -17,16 +18,26 @@ public class ControladorPersona {
 
     private final ServicioAplicacionListarPersonas servicioListarPersonas;
     private final ServicioAplicacionGuardarPersona servicioGuardarPersona;
+    private final ServicioAplicacionExportarPersonasExcel servicioExportarPersonasExcel;
 
-    public ControladorPersona(ServicioAplicacionListarPersonas servicioListarPersonas, ServicioAplicacionGuardarPersona servicioGuardarPersona) {
+    public ControladorPersona(ServicioAplicacionListarPersonas servicioListarPersonas,
+                              ServicioAplicacionGuardarPersona servicioGuardarPersona,
+                              ServicioAplicacionExportarPersonasExcel servicioAplicacionExportarPersonasExcel) {
         this.servicioListarPersonas = servicioListarPersonas;
         this.servicioGuardarPersona = servicioGuardarPersona;
+        this.servicioExportarPersonasExcel = servicioAplicacionExportarPersonasExcel;
     }
 
     @GetMapping
     @Secured(roles = {"EMPLEADO"})
     public List<Persona> listar() {
         return servicioListarPersonas.ejecutar();
+    }
+
+    @GetMapping("/excel")
+    @Secured(roles = {"EMPLEADO"})
+    public byte[] exportarExcel() {
+        return servicioExportarPersonasExcel.ejecutar();
     }
 
     @PostMapping
