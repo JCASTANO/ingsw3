@@ -29,13 +29,13 @@ public class ControladorPersona {
     }
 
     @GetMapping
-    @Secured(roles = {"EMPLEADO"})
+    //@Secured(roles = {"EMPLEADO"})
     public List<Persona> listar() {
         return servicioListarPersonas.ejecutar();
     }
 
     @GetMapping("/excel")
-    @Secured(roles = {"EMPLEADO"})
+    //@Secured(roles = {"EMPLEADO"})
     public byte[] exportarExcel() {
         return servicioExportarPersonasExcel.ejecutar();
     }
