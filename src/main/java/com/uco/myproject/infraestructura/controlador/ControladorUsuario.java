@@ -7,7 +7,6 @@ import com.uco.myproject.dominio.dto.DtoUsuarioActual;
 import com.uco.myproject.dominio.servicio.ServicioObtenerUsuarioActual;
 import org.springframework.web.bind.annotation.*;
 
-@CrossOrigin(origins = "http://localhost:4200")
 @RestController
 @RequestMapping("/api/usuarios")
 public class ControladorUsuario {
