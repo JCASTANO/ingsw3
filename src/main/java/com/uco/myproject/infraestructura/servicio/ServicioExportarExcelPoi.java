@@ -13,12 +13,16 @@ import java.util.UUID;
 import com.uco.myproject.dominio.servicio.ServicioExportarExcel;
 import com.uco.myproject.infraestructura.error.ExceptionTecnica;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import net.sf.jxls.transformer.XLSTransformer;
 
 @Component
 public class ServicioExportarExcelPoi implements ServicioExportarExcel {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(ServicioExportarExcelPoi.class);
 
     private static final String ERROR_BORRANDO_EL_ARCHIVO = "Error borrando el archivo";
     private static final String ERROR_CREANDO_EL_ARCHIVO_TEMPORAL = "Error creando el archivo temporal";
@@ -29,6 +33,9 @@ public class ServicioExportarExcelPoi implements ServicioExportarExcel {
     
     @Override
 	public byte[] ejecutar(List<? extends Object> registros,String template) {
+
+        LOGGER.info("En clase de excel nombre del hilo : " + Thread.currentThread().getName());
+
         byte[] resultado;
         Map<String, Object> parametros = new HashMap<>();
         parametros.put(FILAS, registros);
@@ -47,7 +54,7 @@ public class ServicioExportarExcelPoi implements ServicioExportarExcel {
             throw new ExceptionTecnica(ERROR_EXPORTANDO_EL_DOCUMENTO,exception);
         } finally {
             //borrarArchivo(archivoGenerado);
-            System.out.println(archivoGenerado.getAbsolutePath());
+            LOGGER.info(archivoGenerado.getAbsolutePath());
         }
         
         return resultado;
