@@ -21,6 +21,16 @@ public class ServicioGuardarPersona {
             throw new IllegalStateException(MENSAJE_YA_EXISTE);
         }
 
+        if(PalindromeChecker.validate(persona.getNombre())) {
+            //https://martinfowler.com/bliki/TellDontAsk.html
+            System.out.println("Ejecutar proceso de negocio con palindromo sin aplicar tell dont ask");
+        }
+
+        if(persona.tieneNombrePalindromo()) {
+            //https://martinfowler.com/bliki/TellDontAsk.html
+            System.out.println("Ejecutar proceso de negocio con palindromo aplicando tell dont ask");
+        }
+
         return this.repositorioPersona.guardar(persona);
     }
 }

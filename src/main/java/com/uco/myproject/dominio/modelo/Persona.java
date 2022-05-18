@@ -1,5 +1,6 @@
 package com.uco.myproject.dominio.modelo;
 
+import com.uco.myproject.dominio.servicio.PalindromeChecker;
 import com.uco.myproject.dominio.validador.ValidadorArgumento;
 
 public class Persona {
@@ -26,5 +27,9 @@ public class Persona {
 
     public String getApellido() {
         return apellido;
+    }
+
+    public boolean tieneNombrePalindromo() {
+        return PalindromeChecker.validate(this.nombre);
     }
 }
