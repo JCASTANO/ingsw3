@@ -10,8 +10,8 @@ public class TareaProgramadaEnviarCorreo {
 
     //https://riptutorial.com/spring/example/21209/cron-expression
 
-    //cada 5 segundos
-    @Scheduled(cron = "*/5 * * * * *")
+    //cada 60 segundos
+    @Scheduled(cron = "*/60 * * * * *")
     public void scheduleTaskUsingCronExpression() {
 
         System.out.println("Enviando correo desde tarea programada " + LocalDateTime.now());

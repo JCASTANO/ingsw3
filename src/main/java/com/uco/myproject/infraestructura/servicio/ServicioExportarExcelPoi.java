@@ -53,8 +53,7 @@ public class ServicioExportarExcelPoi implements ServicioExportarExcel {
         } catch(Exception exception) {
             throw new ExceptionTecnica(ERROR_EXPORTANDO_EL_DOCUMENTO,exception);
         } finally {
-            //borrarArchivo(archivoGenerado);
-            LOGGER.info(archivoGenerado.getAbsolutePath());
+            borrarArchivo(archivoGenerado);
         }
         
         return resultado;
