@@ -17,6 +17,12 @@ public class ServicioEnviarEmailJavaMail implements ServicioEnviarEmail {
 
         LOGGER.info("En clase de email nombre del hilo : " + Thread.currentThread().getName());
 
+        try {
+            Thread.sleep(5000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
         LOGGER.info("Email enviado");
     }
 }

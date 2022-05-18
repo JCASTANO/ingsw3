@@ -36,7 +36,17 @@ public class ControladorPersona {
     @GetMapping("/excel")
     //@Secured(roles = {"EMPLEADO"})
     public byte[] exportarExcel() {
-        return servicioExportarPersonasExcel.ejecutar();
+
+        final long startTime = System.currentTimeMillis();
+
+        byte[] report = servicioExportarPersonasExcel.ejecutar();
+
+        final long endTime = System.currentTimeMillis();
+        final long execution = endTime - startTime;
+
+        System.out.println("tiempo total: " + execution);
+
+        return report;
     }
 
     @PostMapping
