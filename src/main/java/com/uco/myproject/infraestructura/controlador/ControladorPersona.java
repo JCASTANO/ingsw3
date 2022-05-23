@@ -1,6 +1,7 @@
 package com.uco.myproject.infraestructura.controlador;
 
 import com.uco.myproject.aplicacion.servicio.ServicioAplicacionExportarPersonasExcel;
+import com.uco.myproject.aplicacion.servicio.ServicioAplicacionExportarPersonasPdf;
 import com.uco.myproject.aplicacion.servicio.ServicioAplicacionGuardarPersona;
 import com.uco.myproject.aplicacion.servicio.ServicioAplicacionListarPersonas;
 import com.uco.myproject.aplicacion.dto.DtoPersona;
@@ -18,13 +19,16 @@ public class ControladorPersona {
     private final ServicioAplicacionListarPersonas servicioListarPersonas;
     private final ServicioAplicacionGuardarPersona servicioGuardarPersona;
     private final ServicioAplicacionExportarPersonasExcel servicioExportarPersonasExcel;
+    private final ServicioAplicacionExportarPersonasPdf servicioExportarPersonasPdf;
 
     public ControladorPersona(ServicioAplicacionListarPersonas servicioListarPersonas,
                               ServicioAplicacionGuardarPersona servicioGuardarPersona,
-                              ServicioAplicacionExportarPersonasExcel servicioAplicacionExportarPersonasExcel) {
+                              ServicioAplicacionExportarPersonasExcel servicioAplicacionExportarPersonasExcel,
+                              ServicioAplicacionExportarPersonasPdf servicioAplicacionExportarPersonasPdf) {
         this.servicioListarPersonas = servicioListarPersonas;
         this.servicioGuardarPersona = servicioGuardarPersona;
         this.servicioExportarPersonasExcel = servicioAplicacionExportarPersonasExcel;
+        this.servicioExportarPersonasPdf = servicioAplicacionExportarPersonasPdf;
     }
 
     @GetMapping
@@ -47,6 +51,12 @@ public class ControladorPersona {
         System.out.println("tiempo total: " + execution);
 
         return report;
+    }
+
+    @GetMapping("/pdf")
+    //@Secured(roles = {"EMPLEADO"})
+    public byte[] exportarPdf() {
+        return servicioExportarPersonasPdf.ejecutar();
     }
 
     @PostMapping
