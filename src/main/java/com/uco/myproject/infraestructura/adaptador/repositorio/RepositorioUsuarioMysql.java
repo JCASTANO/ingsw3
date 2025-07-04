@@ -3,45 +3,65 @@ package com.uco.myproject.infraestructura.adaptador.repositorio;
 import com.uco.myproject.dominio.modelo.RolUsuario;
 import com.uco.myproject.dominio.modelo.Usuario;
 import com.uco.myproject.dominio.puerto.RepositorioUsuario;
-import com.uco.myproject.infraestructura.adaptador.entidad.EntidadRolUsuario;
-import com.uco.myproject.infraestructura.adaptador.entidad.EntidadUsuario;
-import com.uco.myproject.infraestructura.adaptador.repositorio.jpa.RepositorioUsuarioJpa;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
+import java.sql.PreparedStatement;
+import java.sql.Statement;
 import java.util.List;
 
 @Repository
 public class RepositorioUsuarioMysql implements RepositorioUsuario {
 
-    private final RepositorioUsuarioJpa repositorioUsuarioJpa;
+    private final JdbcTemplate jdbcTemplate;
 
-    public RepositorioUsuarioMysql(RepositorioUsuarioJpa repositorioUsuarioJpa) {
-        this.repositorioUsuarioJpa = repositorioUsuarioJpa;
+    public RepositorioUsuarioMysql(JdbcTemplate jdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
     }
 
     @Override
     public Long guardar(Usuario usuario) {
+        KeyHolder keyHolder = new GeneratedKeyHolder();
+        jdbcTemplate.update(con -> {
+            PreparedStatement ps = con.prepareStatement(
+                    "INSERT INTO usuario(usuario, clave) VALUES (?, ?)",
+                    Statement.RETURN_GENERATED_KEYS);
+            ps.setString(1, usuario.getUsuario());
+            ps.setString(2, usuario.getClave());
+            return ps;
+        }, keyHolder);
 
-        List<EntidadRolUsuario> roles = usuario.getRoles().stream().map(rol -> new EntidadRolUsuario(rol.getRol())).toList();
-        EntidadUsuario entidadUsuario = new EntidadUsuario(usuario.getUsuario(), usuario.getClave(), roles);
-
-        return this.repositorioUsuarioJpa.save(entidadUsuario).getId();
+        Long userId = keyHolder.getKey().longValue();
+        for (RolUsuario rol : usuario.getRoles()) {
+            jdbcTemplate.update(
+                    "INSERT INTO rol_usuario(rol, id_usuario) VALUES (?, ?)",
+                    rol.getRol(), userId);
+        }
+        return userId;
     }
 
     @Override
     public boolean existe(Usuario usuario) {
-        return this.repositorioUsuarioJpa.findByUsuario(usuario.getUsuario()) != null;
+        Integer count = jdbcTemplate.queryForObject(
+                "SELECT COUNT(*) FROM usuario WHERE usuario = ?",
+                Integer.class,
+                usuario.getUsuario());
+        return count != null && count > 0;
     }
 
     @Override
     public Usuario consultar(String usuario, String clave) {
-        EntidadUsuario entidadUsuario = this.repositorioUsuarioJpa.findByUsuarioAndClave(usuario, clave);
-
-        if(entidadUsuario == null) {
-            return null;
-        }
-
-        List<RolUsuario> roles = entidadUsuario.getRoles().stream().map(rol -> RolUsuario.of(rol.getRol())).toList();
-        return Usuario.of(entidadUsuario.getUsuario(), entidadUsuario.getClave(), roles);
+        String sql = "SELECT id, usuario, clave FROM usuario WHERE usuario = ? AND clave = ?";
+        List<Usuario> usuarios = jdbcTemplate.query(sql, (rs, rowNum) -> {
+            Long id = rs.getLong("id");
+            List<RolUsuario> roles = jdbcTemplate.query(
+                    "SELECT rol FROM rol_usuario WHERE id_usuario = ?",
+                    (rsRol, num) -> RolUsuario.of(rsRol.getString("rol")),
+                    id);
+            return Usuario.of(rs.getString("usuario"), rs.getString("clave"), roles);
+        }, usuario, clave);
+        return usuarios.isEmpty() ? null : usuarios.get(0);
     }
 }

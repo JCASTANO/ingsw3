@@ -1,0 +1,18 @@
+CREATE TABLE persona (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(255) NOT NULL,
+    apellido VARCHAR(255) NOT NULL
+);
+
+CREATE TABLE usuario (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    usuario VARCHAR(255) NOT NULL,
+    clave VARCHAR(255) NOT NULL
+);
+
+CREATE TABLE rol_usuario (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    rol VARCHAR(255) NOT NULL,
+    id_usuario BIGINT,
+    CONSTRAINT fk_usuario FOREIGN KEY(id_usuario) REFERENCES usuario(id)
+);
