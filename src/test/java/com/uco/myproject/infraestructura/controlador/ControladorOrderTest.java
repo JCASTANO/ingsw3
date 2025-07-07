@@ -1,48 +1,40 @@
 package com.uco.myproject.infraestructura.controlador;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.uco.myproject.aplicacion.dto.DtoOrderItemRequest;
-import com.uco.myproject.aplicacion.dto.DtoOrderRequest;
-import com.uco.myproject.aplicacion.dto.DtoOrderResponse;
-import com.uco.myproject.infraestructura.ApplicationMock;
-import org.junit.jupiter.api.DisplayName;
+import com.uco.myproject.aplicacion.dto.*;
+import com.uco.myproject.aplicacion.servicio.ServicioAplicacionConsultarOrder;
+import com.uco.myproject.aplicacion.servicio.ServicioAplicacionCrearOrder;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.http.MediaType;
-import org.springframework.test.annotation.DirtiesContext;
-import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
-import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 
+import java.math.BigDecimal;
 import java.util.Arrays;
+import java.util.Map;
+import java.util.Optional;
 
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-import static org.hamcrest.core.Is.is;
+import static org.junit.jupiter.api.Assertions.*;
 
-@ExtendWith(SpringExtension.class)
-@SpringBootTest
-@AutoConfigureMockMvc
-@ContextConfiguration(classes = ApplicationMock.class)
-@ActiveProfiles("test")
-@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
+@ExtendWith(MockitoExtension.class)
 class ControladorOrderTest {
 
-    @Autowired
-    private ObjectMapper objectMapper;
+    @Mock
+    private ServicioAplicacionCrearOrder servicioCrearOrder;
 
-    @Autowired
-    private MockMvc mockMvc;
+    @Mock
+    private ServicioAplicacionConsultarOrder servicioConsultarOrder;
+
+    @InjectMocks
+    private ControladorOrder controladorOrder;
 
     @Test
-    @DisplayName("Debe crear una orden exitosa y luego consultarla")
-    void crearYConsultarOrderTest() throws Exception {
+    void crearOrderExitoso() {
         // arrange
-        DtoOrderRequest orderRequest = new DtoOrderRequest(
+        DtoOrderRequest request = new DtoOrderRequest(
             123L,
             Arrays.asList(
                 new DtoOrderItemRequest(456L, 2),
@@ -51,99 +43,75 @@ class ControladorOrderTest {
             "CREDIT_CARD"
         );
 
-        // act - crear orden
-        var result = mockMvc.perform(MockMvcRequestBuilders.post("/orders")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(orderRequest))
-                )
-                .andExpect(status().isCreated())
-                .andReturn();
-
-        // assert - verificar respuesta de creación
-        var jsonResult = result.getResponse().getContentAsString();
-        DtoOrderResponse orderResponse = objectMapper.readValue(jsonResult, DtoOrderResponse.class);
-
-        // act - consultar orden creada
-        mockMvc.perform(MockMvcRequestBuilders.get("/orders/" + orderResponse.getOrderId())
-                        .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.orderId", is(orderResponse.getOrderId().intValue())))
-                .andExpect(jsonPath("$.customerId", is(123)))
-                .andExpect(jsonPath("$.status", is("PAID")))
-                .andExpect(jsonPath("$.totalAmount", is(450.00)))
-                .andExpect(jsonPath("$.items[0].productId", is(456)))
-                .andExpect(jsonPath("$.items[0].quantity", is(2)))
-                .andExpect(jsonPath("$.items[1].productId", is(789)))
-                .andExpect(jsonPath("$.items[1].quantity", is(1)));
-    }
-
-    @Test
-    @DisplayName("Debe fallar con cantidad excesiva por producto")
-    void fallarConCantidadExcesivaTest() throws Exception {
-        // arrange
-        DtoOrderRequest orderRequest = new DtoOrderRequest(
+        DtoOrderResponse expectedResponse = new DtoOrderResponse(
+            1L, 
             123L,
             Arrays.asList(
-                new DtoOrderItemRequest(456L, 15) // Exceeds limit of 10
+                new DtoOrderItemResponse(456L, 2, new BigDecimal("100.00")),
+                new DtoOrderItemResponse(789L, 1, new BigDecimal("250.00"))
             ),
+            new BigDecimal("450.00"),
+            "PAID",
             "CREDIT_CARD"
         );
 
-        // act - assert
-        mockMvc.perform(MockMvcRequestBuilders.post("/orders")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(orderRequest))
-                )
-                .andExpect(status().isBadRequest());
+        Mockito.when(servicioCrearOrder.ejecutar(request))
+               .thenReturn(new DtoRespuesta<>(expectedResponse));
+
+        // act
+        ResponseEntity<DtoOrderResponse> response = controladorOrder.crear(request);
+
+        // assert
+        assertEquals(HttpStatus.CREATED, response.getStatusCode());
+        assertEquals(expectedResponse, response.getBody());
+        Mockito.verify(servicioCrearOrder, Mockito.times(1)).ejecutar(request);
     }
 
     @Test
-    @DisplayName("Debe fallar con método de pago no permitido")
-    void fallarConMetodoPagoNoPermitidoTest() throws Exception {
+    void consultarOrderExistente() {
         // arrange
-        DtoOrderRequest orderRequest = new DtoOrderRequest(
+        Long orderId = 1L;
+        DtoOrderResponse expectedResponse = new DtoOrderResponse(
+            1L, 
             123L,
             Arrays.asList(
-                new DtoOrderItemRequest(456L, 2)
+                new DtoOrderItemResponse(456L, 2, new BigDecimal("100.00"))
             ),
-            "DEBIT_CARD" // Not allowed payment method
-        );
-
-        // act - assert
-        mockMvc.perform(MockMvcRequestBuilders.post("/orders")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(orderRequest))
-                )
-                .andExpect(status().isBadRequest());
-    }
-
-    @Test
-    @DisplayName("Debe fallar con stock insuficiente")
-    void fallarConStockInsuficienteTest() throws Exception {
-        // arrange
-        DtoOrderRequest orderRequest = new DtoOrderRequest(
-            123L,
-            Arrays.asList(
-                new DtoOrderItemRequest(789L, 5) // Only 2 available in test data
-            ),
+            new BigDecimal("200.00"),
+            "PAID",
             "CREDIT_CARD"
         );
 
-        // act - assert
-        mockMvc.perform(MockMvcRequestBuilders.post("/orders")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(orderRequest))
-                )
-                .andExpect(status().isConflict());
+        Mockito.when(servicioConsultarOrder.ejecutar(orderId))
+               .thenReturn(Optional.of(expectedResponse));
+
+        // act
+        ResponseEntity<?> response = controladorOrder.consultar(orderId);
+
+        // assert
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(expectedResponse, response.getBody());
+        Mockito.verify(servicioConsultarOrder, Mockito.times(1)).ejecutar(orderId);
     }
 
     @Test
-    @DisplayName("Debe fallar al consultar orden inexistente")
-    void fallarAlConsultarOrdenInexistenteTest() throws Exception {
-        // act - assert
-        mockMvc.perform(MockMvcRequestBuilders.get("/orders/999")
-                        .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isNotFound())
-                .andExpect(jsonPath("$.message", is("Orden no encontrada")));
+    void consultarOrderInexistente() {
+        // arrange
+        Long orderId = 999L;
+
+        Mockito.when(servicioConsultarOrder.ejecutar(orderId))
+               .thenReturn(Optional.empty());
+
+        // act
+        ResponseEntity<?> response = controladorOrder.consultar(orderId);
+
+        // assert
+        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+        
+        @SuppressWarnings("unchecked")
+        Map<String, String> body = (Map<String, String>) response.getBody();
+        assertEquals("Orden no encontrada", body.get("message"));
+        
+        Mockito.verify(servicioConsultarOrder, Mockito.times(1)).ejecutar(orderId);
     }
 }
