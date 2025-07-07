@@ -23,6 +23,12 @@ public class ManejadorError extends ResponseEntityExceptionHandler {
     public ManejadorError() {
         CODIGOS_ESTADO.put(IllegalStateException.class.getSimpleName(), HttpStatus.CONFLICT.value());
         CODIGOS_ESTADO.put(ExceptionUserUnauthorized.class.getSimpleName(), HttpStatus.FORBIDDEN.value());
+        // Order management exceptions
+        CODIGOS_ESTADO.put(IllegalArgumentException.class.getSimpleName(), HttpStatus.BAD_REQUEST.value());
+        CODIGOS_ESTADO.put("PaymentFailedException", HttpStatus.PAYMENT_REQUIRED.value());
+        CODIGOS_ESTADO.put("InsufficientStockException", HttpStatus.CONFLICT.value());
+        CODIGOS_ESTADO.put("StockReservationException", HttpStatus.CONFLICT.value());
+        CODIGOS_ESTADO.put("ProductNotFoundException", HttpStatus.CONFLICT.value());
         //en caso de tener otra excepcion propia matricularla aca
     }
 
