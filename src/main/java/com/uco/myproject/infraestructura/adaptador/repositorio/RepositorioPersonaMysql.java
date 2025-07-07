@@ -19,7 +19,7 @@ public class RepositorioPersonaMysql implements RepositorioPersona {
     @Override
     public List<Persona> listar() {
         List<EntidadPersona> entidades = this.repositorioPersonaJpa.findAll();
-        return entidades.stream().map(entidad -> Persona.of(entidad.getNombre(), entidad.getApellido())).toList();
+        return entidades.stream().map(entidad -> Persona.of(entidad.getNombre(), entidad.getApellido(), entidad.getEdad())).toList();
     }
 
     @Override
@@ -27,14 +27,14 @@ public class RepositorioPersonaMysql implements RepositorioPersona {
 
        return this.repositorioPersonaJpa
                .findById(id)
-               .map(entidad -> Persona.of(entidad.getNombre(), entidad.getApellido()))
+               .map(entidad -> Persona.of(entidad.getNombre(), entidad.getApellido(), entidad.getEdad()))
                .orElse(null);
     }
 
     @Override
     public Long guardar(Persona persona) {
 
-        EntidadPersona entidadPersona = new EntidadPersona(persona.getNombre(), persona.getApellido());
+        EntidadPersona entidadPersona = new EntidadPersona(persona.getNombre(), persona.getApellido(), persona.getEdad());
 
         return this.repositorioPersonaJpa.save(entidadPersona).getId();
     }
