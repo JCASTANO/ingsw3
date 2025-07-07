@@ -6,10 +6,12 @@ public class DtoPersonaTestDataBuilder {
 
     private String nombre;
     private String apellido;
+    private Integer edad;
 
     public DtoPersonaTestDataBuilder() {
         this.nombre = "juan";
         this.apellido = "castaño";
+        this.edad = 25;
     }
 
     public DtoPersonaTestDataBuilder conNombre(String nombre) {
@@ -22,7 +24,12 @@ public class DtoPersonaTestDataBuilder {
         return this;
     }
 
+    public DtoPersonaTestDataBuilder conEdad(Integer edad) {
+        this.edad = edad;
+        return this;
+    }
+
     public DtoPersona build() {
-        return new DtoPersona(nombre, apellido);
+        return new DtoPersona(nombre, apellido, edad);
     }
 }

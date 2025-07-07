@@ -17,7 +17,7 @@ public class ServicioAplicacionGuardarPersona {
 
     public DtoRespuesta<Long> ejecutar(DtoPersona dto) {
 
-        Persona persona = Persona.of(dto.getNombre(), dto.getApellido());
+        Persona persona = Persona.of(dto.getNombre(), dto.getApellido(), dto.getEdad());
 
         return new DtoRespuesta<>(this.servicioGuardarPersona.ejecutar(persona));
     }

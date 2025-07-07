@@ -6,10 +6,12 @@ public class PersonaTestDataBuilder {
 
     private String nombre;
     private String apellido;
+    private Integer edad;
 
     public PersonaTestDataBuilder() {
         this.nombre = "juan";
         this.apellido = "castano";
+        this.edad = 25;
     }
 
     public PersonaTestDataBuilder conNombre(String nombre) {
@@ -22,7 +24,12 @@ public class PersonaTestDataBuilder {
         return this;
     }
 
+    public PersonaTestDataBuilder conEdad(Integer edad) {
+        this.edad = edad;
+        return this;
+    }
+
     public Persona build() {
-        return Persona.of(nombre, apellido);
+        return Persona.of(nombre, apellido, edad);
     }
 }

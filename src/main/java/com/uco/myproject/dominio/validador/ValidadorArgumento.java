@@ -23,4 +23,10 @@ public class ValidadorArgumento {
             throw new IllegalArgumentException(mensaje);
         }
     }
+
+    public static void validarRangoEntero(Integer valor, Integer minimo, Integer maximo, String mensaje) {
+        if(valor != null && (valor < minimo || valor > maximo)) {
+            throw new IllegalArgumentException(mensaje);
+        }
+    }
 }
