@@ -26,10 +26,9 @@ public class ServicioAplicacionRegistrarUsuario {
 
         List<RolUsuario> roles = Arrays.asList(RolUsuario.of("EMPLEADO"),RolUsuario.of("EGRESADO"));
 
-        Usuario usuario = Usuario.of(dto.getUsuario(), dto.getClave(), roles);
-
-        String claveCifrada = this.servicioCifrarTexto.ejecutar(usuario.getClave());
-        usuario.asignarClaveCifrada(claveCifrada);
+        // Encrypt password before creating Usuario object to avoid storing plain text passwords
+        String claveCifrada = this.servicioCifrarTexto.ejecutar(dto.getClave());
+        Usuario usuario = Usuario.of(dto.getUsuario(), claveCifrada, roles);
 
         return new DtoRespuesta<>(this.servicioGuardarUsuario.ejecutar(usuario));
     }
